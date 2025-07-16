@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sweet Shop Management</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            margin-top: 40px;
+        }
+        .card {
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+        }
+        .table thead {
+            background-color: #212529;
+            color: white;
+        }
+        .form-label {
+            font-weight: 500;
+        }
+        .btn-custom {
+            background-color: #dc3545;
+            color: white;
+        }
+        .btn-custom:hover {
+            background-color: #bb2d3b;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Add Sweet Form -->
+    <div class="card mb-5">
+        <h2 class="text-center text-danger mb-4">Add New Sweet</h2>
+        <form action="{{ url_for('add_sweet') }}" method="POST">
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label class="form-label">Sweet ID</label>
+                    <input type="number" class="form-control" name="id" required>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Sweet Name</label>
+                    <input type="text" class="form-control" name="name" required>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <label class="form-label">Category</label>
+                    <select class="form-select" name="category" required>
+                        <option value="">Select</option>
+                        <option value="Nut-Based">Nut-Based</option>
+                        <option value="Milk-Based">Milk-Based</option>
+                        <option value="Vegetable-Based">Vegetable-Based</option>
+                        <option value="Dry Fruit-Based">Dry Fruit-Based</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Price</label>
+                    <input type="number" class="form-control" name="price" required>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Quantity</label>
+                    <input type="number" class="form-control" name="quantity" required>
+                </div>
+            </div>
+            <div class="text-center">
+                <button class="btn btn-custom" type="submit">Add Sweet</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Sweet Table -->
+    <div class="card">
+        <h2 class="text-center text-primary mb-4">Available Sweets</h2>
+        <table class="table table-bordered text-center">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Price (₹)</th>
+                    <th>Quantity</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for sweet in sweets %}
+                <tr>
+                    <td>{{ sweet.id }}</td>
+                    <td>{{ sweet.name }}</td>
+                    <td>{{ sweet.category }}</td>
+                    <td>{{ sweet.price }}</td>
+                    <td>{{ sweet.quantity }}</td>
+                    <td>
+                        <form action="{{ url_for('delete_sweet', sweet_id=sweet.id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this sweet?');">
+                            <button class="btn btn-sm btn-danger">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</body>
+</html>
